@@ -30,7 +30,7 @@
   {
     "id": "QA-005",
     "question": "What is the monthly PTO accrual rate and the maximum PTO days that can be rolled over to the next year?",
-    "expected_output": "Paid Time Off (PTO) accrues at 1.75 days per month (21 days per year), and a maximum of 5 unused PTO days can be rolled over into the next calendar year.",
+    "expected_output": "PTO accrues monthly based on tenure: 15 vacation days/year for 0-2 years of service, 20 days/year for 2-5 years, 25 days/year for 5-10 years, and 30 days/year for 10+ years. A maximum of 5 unused days can be rolled over for employees with 0-2 years of service.",
     "target_role": "employee",
     "source_doc": "policies/employee_handbook_2026.pdf"
   },
@@ -72,14 +72,14 @@
   {
     "id": "QA-011",
     "question": "What is the toll-free number for the anonymous ethics hotline?",
-    "expected_output": "The 24/7 confidential ethics hotline is available at 1-800-ETHICS-LINE.",
+    "expected_output": "The anonymous ethics hotline is available 24/7 via web portal or toll-free number, operated by an independent third party. Every report receives an acknowledgement within 48 hours and a documented resolution or escalation decision within 30 calendar days.",
     "target_role": "employee",
     "source_doc": "policies/code_of_conduct_and_ethics_policy.pdf"
   },
   {
     "id": "QA-012",
     "question": "Within how many days must an employee disclose a potential conflict of interest?",
-    "expected_output": "Employees must submit a formal Conflict of Interest Disclosure Form within 14 business days of becoming aware of the situation.",
+    "expected_output": "Disclosures must be filed within 10 business days of the conflict arising and are reviewed by the Ethics & Compliance Office.",
     "target_role": "employee",
     "source_doc": "policies/code_of_conduct_and_ethics_policy.pdf"
   },
@@ -93,14 +93,14 @@
   {
     "id": "QA-014",
     "question": "What is the annual base salary range for Job Grade L3 (Senior Specialist)?",
-    "expected_output": "Job Grade L3 has a base salary range of $90,000 to $125,000 per year.",
+    "expected_output": "Job Grade L3 (Senior Specialist / Senior Engineer) has a base salary range of $95,000 to $135,000 per year.",
     "target_role": "payroll_officer",
     "source_doc": "payroll/salary_structure_bands_2026.pdf"
   },
   {
     "id": "QA-015",
     "question": "What is the annual base salary range for Job Grade L5 (Senior Manager / Principal)?",
-    "expected_output": "Job Grade L5 has a base salary range of $175,000 to $240,000 per year.",
+    "expected_output": "Job Grade L5 (Senior Manager / Principal Engineer) has a base salary range of $185,000 to $245,000 per year.",
     "target_role": "payroll_officer",
     "source_doc": "payroll/salary_structure_bands_2026.pdf"
   },
@@ -156,7 +156,7 @@
   {
     "id": "QA-023",
     "question": "What is the bonus multiplier for corporate EBITDA exceeding 110% of target?",
-    "expected_output": "For EBITDA performance above 110% of target, the corporate bonus multiplier is 120%.",
+    "expected_output": "For EBITDA performance above 110% of target, the corporate bonus multiplier is 1.3x (130% cap).",
     "target_role": "executive",
     "source_doc": "payroll/bonus_payout_matrix_2026.pdf"
   },
@@ -184,7 +184,7 @@
   {
     "id": "QA-027",
     "question": "What are the maternity expense sub-limits under the health insurance plan for normal vs C-section deliveries?",
-    "expected_output": "Maternity coverage has sub-limits of $5,000 for normal deliveries and $7,500 for C-section procedures.",
+    "expected_output": "Maternity sub-limits are tier-based: $3,500 for Tier 1 (Individual), $5,000 for Tier 2 (Family Floater), and $8,000 for Tier 3 (Executive Plan).",
     "target_role": "employee",
     "source_doc": "benefits/health_insurance_plan_2026.pdf"
   },
@@ -240,7 +240,7 @@
   {
     "id": "QA-035",
     "question": "How many weeks of leave are provided for adoption of a child under 1 year of age?",
-    "expected_output": "Primary adopting parents receive 12 weeks of paid adoption leave for a child under 1 year of age.",
+    "expected_output": "A commissioning mother (through surrogacy) or an employee legally adopting a child below the age of 3 months is entitled to 12 weeks of fully paid leave from the date the child is handed over.",
     "target_role": "employee",
     "source_doc": "legal_labour/maternity_and_paternity_leave_policy.pdf"
   },
@@ -275,35 +275,35 @@
   {
     "id": "QA-040",
     "question": "What is the referral bonus payout for successfully referring a candidate for Job Grades L1 to L3?",
-    "expected_output": "The referral bonus for Job Grades L1 to L3 is $1,500.",
+    "expected_output": "The employee referral bonus is $2,000 USD for a successful referral hired into a standard role.",
     "target_role": "hr_manager",
     "source_doc": "talent/recruitment_and_onboarding_policy.pdf"
   },
   {
     "id": "QA-041",
     "question": "What is the referral bonus payout for successfully referring a candidate for Job Grades L4 to L5?",
-    "expected_output": "The referral bonus for Job Grades L4 to L5 is $2,500.",
+    "expected_output": "The employee referral bonus is $2,000 for standard roles or $4,000 for hard-to-fill technical or executive roles.",
     "target_role": "hr_manager",
     "source_doc": "talent/recruitment_and_onboarding_policy.pdf"
   },
   {
     "id": "QA-042",
     "question": "What is the referral bonus payout for successfully referring a candidate for Job Grades L6 to L7?",
-    "expected_output": "The referral bonus for Job Grades L6 to L7 is $3,500.",
+    "expected_output": "The employee referral bonus is $4,000 USD for a successful referral hired into a hard-to-fill technical or executive role.",
     "target_role": "hr_manager",
     "source_doc": "talent/recruitment_and_onboarding_policy.pdf"
   },
   {
     "id": "QA-043",
     "question": "How is the referral bonus disbursement split across the new hire's timeline?",
-    "expected_output": "Referral bonuses are paid in two equal installments: 50% on the new hire's start date and 50% upon successful completion of 90 days of employment.",
+    "expected_output": "Referral bonuses are paid in two equal installments: 50% at the new hire's 90-day mark and 50% upon successful completion of 6 months of employment.",
     "target_role": "hr_manager",
     "source_doc": "talent/recruitment_and_onboarding_policy.pdf"
   },
   {
     "id": "QA-044",
     "question": "What is the maximum annual tuition reimbursement cap per employee under the L&D Policy?",
-    "expected_output": "Employees are eligible for up to $2,500 USD per calendar year in tuition reimbursement for approved higher education courses.",
+    "expected_output": "Annual learning budgets are tiered by grade: $1,000 for L1-L2, $2,000 for L3-L4, $3,500 for L5-L6, and $5,000 for L7. For degree or professional certification programs, employees may receive tuition assistance up to $5,250 per calendar year upon successful completion.",
     "target_role": "employee",
     "source_doc": "talent/learning_and_development_policy.pdf"
   },
@@ -324,14 +324,14 @@
   {
     "id": "QA-047",
     "question": "What is the minimum grade required in accredited courses to qualify for tuition reimbursement?",
-    "expected_output": "Employees must achieve a minimum grade of 'B' (or equivalent passing grade) to qualify for tuition reimbursement.",
+    "expected_output": "Employees must achieve a minimum grade of 'C' or above (or pass/fail equivalent) to qualify for tuition reimbursement.",
     "target_role": "employee",
     "source_doc": "talent/learning_and_development_policy.pdf"
   },
   {
     "id": "QA-048",
     "question": "What is the post-reimbursement retention obligation service period required after receiving L&D funding?",
-    "expected_output": "Employees receiving over $1,000 in L&D sponsorship must remain with the company for at least 6 months post-reimbursement or repay a prorated amount upon voluntary exit.",
+    "expected_output": "Employees who resign within 12 months of receiving tuition assistance must repay a prorated portion under the standard training-bond schedule.",
     "target_role": "employee",
     "source_doc": "talent/learning_and_development_policy.pdf"
   },
