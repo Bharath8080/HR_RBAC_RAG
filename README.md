@@ -9,15 +9,17 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) system featuring **Mult
 ### 📈 Stage 1: Dense Semantic Search (Baseline)
 *Dense vector embeddings (`BAAI/bge-small-en-v1.5`) with cosine similarity & RBAC filtering.*
 
+> **Re-evaluated** with corrected ground-truth QA dataset (10 answers fixed to match PDF source).
+
 | Metric | Average Score | Pass Rate | Evaluation Result |
 |---|:---:|:---:|---|
-| **Faithfulness** | **0.96** | **100.00%** (50/50 passed) | 🟢 Flawless factual grounding in retrieved context |
-| **Answer Relevancy** | **0.93** | **98.00%** (49/50 passed) | 🟢 Highly pertinent answers aligned with query |
-| **Contextual Precision** | **0.78** | **82.00%** (41/50 passed) | 🟡 Signal-to-noise ratio baseline |
-| **Contextual Recall** | **0.69** | **70.00%** (35/50 passed) | 🟡 Missed exact keyword and policy numbers |
+| **Faithfulness** | **0.97** | **100.00%** (50/50 passed) | 🟢 Flawless factual grounding in retrieved context |
+| **Answer Relevancy** | **0.94** | **100.00%** (50/50 passed) | 🟢 Highly pertinent answers aligned with query |
+| **Contextual Precision** | **0.81** | **86.00%** (43/50 passed) | 🟡 Signal-to-noise ratio baseline |
+| **Contextual Recall** | **0.78** | **78.00%** (39/50 passed) | 🟡 Missed exact keyword and policy numbers |
 | **RBAC Security Isolation** | **1.00** | **100.00%** (28/28 passed) | 🛡️ Zero cross-role data leaks |
 
-**Stage 1 Summary**: **64.00% PASSED** (32/50) | **36.00% FAILED** (18/50)
+**Stage 1 Summary**: **78.00% PASSED** (39/50) | **22.00% FAILED** (11/50)
 
 ---
 
@@ -38,14 +40,16 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) system featuring **Mult
 
 ### 📊 Benchmark Progression: Stage 1 vs Stage 2
 
-| Metric | Stage 1 (Dense Baseline) | Stage 2 (Hybrid BM25 + Dense) | Delta / Improvement |
+> ⚠️ Stage 2 numbers below are from the **old QA dataset** and will be updated after the corrected-QA re-run.
+
+| Metric | Stage 1 (Dense — corrected QA) | Stage 2 (Hybrid BM25 — old QA) | Delta |
 |---|:---:|:---:|:---:|
-| **Contextual Precision** | 0.78 (82% pass) | **0.83 (88% pass)** | 🟢 **+5.0% (+3 passed)** |
-| **Contextual Recall** | 0.69 (70% pass) | **0.73 (74% pass)** | 🟢 **+4.0% (+2 passed)** |
-| **Faithfulness** | 0.96 (100% pass) | **0.92 (98% pass)** | ⚪ -0.04 |
-| **Answer Relevancy** | 0.93 (98% pass) | **0.92 (96% pass)** | ⚪ -0.01 |
-| **RBAC Isolation** | 1.00 (100% pass) | **1.00 (100% pass)** | 🛡️ **100% Maintained (28/28)** |
-| **Overall Pass Rate** | **64.00%** (32/50) | **72.00%** (36/50) | 🚀 **+8.0% Overall Gain** |
+| **Contextual Precision** | 0.81 (86% pass) | 0.83 (88% pass) | 🟢 +2.0% |
+| **Contextual Recall** | 0.78 (78% pass) | 0.73 (74% pass) | ⚪ -4.0% |
+| **Faithfulness** | 0.97 (100% pass) | 0.92 (98% pass) | ⚪ -2.0% |
+| **Answer Relevancy** | 0.94 (100% pass) | 0.92 (96% pass) | ⚪ -4.0% |
+| **RBAC Isolation** | 1.00 (100% pass) | 1.00 (100% pass) | 🛡️ **100% Maintained (28/28)** |
+| **Overall Pass Rate** | **78.00%** (39/50) | **72.00%** (36/50) | ⏳ *Awaiting Stage 2 corrected re-run* |
 
 ---
 

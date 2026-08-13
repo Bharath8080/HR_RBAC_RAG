@@ -1,6 +1,6 @@
 """
-Ingests PDFs into Qdrant with RBAC metadata on every chunk.
-Supports Hybrid indexing (Dense + BM25 Sparse) via src/retriever.
+Ingests a PDF (bytes) into Qdrant with RBAC metadata attached to every chunk.
+For admin-controlled ingestion with a custom allow-list, use admin_ops.index_pdf_for_roles().
 """
 import io
 from pathlib import Path
@@ -9,15 +9,15 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 
-from src.retriever import get_qdrant_client, reset_collection_schema, add_documents_to_qdrant
+from src.retriever import add_documents_to_qdrant, get_qdrant_client, reset_collection_schema
 
 CHUNK_SIZE    = 1000
 CHUNK_OVERLAP = 150
 
 DATA_DIR     = Path(__file__).resolve().parent.parent / "data"
+# Default allow-list for the standard upload flow
 PUBLIC_ROLES = ["employee", "hr_manager", "payroll_officer", "ops_lead", "executive"]
 
-# RBAC role mapping for batch re-ingestion
 ROLE_MAPPING = {
     "employee_handbook_2026.pdf":               ["employee", "hr_manager", "payroll_officer", "ops_lead", "executive"],
     "performance_and_grievance_policy.pdf":     ["hr_manager", "ops_lead", "executive"],
@@ -33,7 +33,6 @@ ROLE_MAPPING = {
 
 
 def process_pdf_bytes(file_bytes: bytes, filename: str, allowed_roles: list[str] | None = None) -> int:
-    """Ingest a single PDF (bytes) into Qdrant. Used by Streamlit UI / FastAPI upload."""
     if allowed_roles is None:
         allowed_roles = PUBLIC_ROLES
 
@@ -56,7 +55,7 @@ def process_pdf_bytes(file_bytes: bytes, filename: str, allowed_roles: list[str]
 
 
 def ingest_all_pdfs() -> None:
-    """Re-index all enterprise PDFs with Dense + BM25 Sparse vectors and RBAC metadata."""
+    """Re-index all enterprise PDFs with Dense vectors and RBAC metadata."""
     client = get_qdrant_client()
     reset_collection_schema(client)
 
@@ -84,9 +83,9 @@ def ingest_all_pdfs() -> None:
         all_chunks.extend(chunks)
         print(f"  • {filename:<50} → {len(chunks):>3} chunks | roles: {', '.join(roles)}")
 
-    print(f"\nIndexing {len(all_chunks)} chunks (Dense + BM25 Sparse)...")
+    print(f"\nIndexing {len(all_chunks)} chunks (Dense Only)...")
     add_documents_to_qdrant(all_chunks)
-    print("Done! Hybrid index is ready.\n")
+    print("Done! Dense index is ready.\n")
 
 
 if __name__ == "__main__":
