@@ -1,37 +1,34 @@
 """
-Qdrant client, vector store, and RBAC filter helpers.
-Stage 1: Dense Vector Retrieval (BAAI/bge-small-en-v1.5).
+Qdrant client, Hybrid Vector Store (Dense + BM25 Sparse) & RBAC filter helpers.
+Stage 2: Hybrid Retrieval — Dense (BAAI/bge-small-en-v1.5) + Sparse (Qdrant/bm25).
 """
 from __future__ import annotations
 import atexit
 import warnings
 
-from fastembed import TextEmbedding
-from langchain_core.embeddings import Embeddings
-from langchain_qdrant import QdrantVectorStore
+from langchain_community.embeddings import FastEmbedEmbeddings
+from langchain_qdrant import FastEmbedSparse, QdrantVectorStore, RetrievalMode
 from qdrant_client import QdrantClient, models
-from qdrant_client.http.models import Distance, VectorParams
+from qdrant_client.http.models import Distance, VectorParams, SparseVectorParams
 
 from src.config import QDRANT_PATH, COLLECTION_NAME
 
-EMBED_MODEL = "BAAI/bge-small-en-v1.5"
-EMBED_DIM   = 384
+# ── Model Config ──────────────────────────────────────────────────────────────
+EMBED_MODEL        = "BAAI/bge-small-en-v1.5"
+EMBED_DIM          = 384
+SPARSE_MODEL       = "Qdrant/bm25"
+
+# Named vector slots inside Qdrant collection
+DENSE_VECTOR_NAME  = "dense"
+SPARSE_VECTOR_NAME = "sparse"
 
 
-class _FastEmbedWrapper(Embeddings):
-    """Thin LangChain Embeddings wrapper around fastembed.TextEmbedding."""
-    def __init__(self, model_name: str) -> None:
-        self._model = TextEmbedding(model_name=model_name)
-
-    def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        return [v.tolist() for v in self._model.embed(texts)]
-
-    def embed_query(self, text: str) -> list[float]:
-        return list(self._model.embed([text]))[0].tolist()
+# ── Embedding Singletons ─────────────────────────────────────────────────────
+dense_embeddings  = FastEmbedEmbeddings(model_name=EMBED_MODEL)
+sparse_embeddings = FastEmbedSparse(model_name=SPARSE_MODEL)
 
 
-embeddings = _FastEmbedWrapper(EMBED_MODEL)
-
+# ── Qdrant Client Singleton ───────────────────────────────────────────────────
 _client: QdrantClient | None = None
 
 
@@ -56,18 +53,26 @@ def _create_payload_index(client: QdrantClient) -> None:
 
 
 def reset_collection_schema(client: QdrantClient) -> None:
-    """Drop and recreate collection schema with Dense vectors only."""
+    """Drop and recreate collection with Dense (cosine) + BM25 Sparse (IDF) vector slots."""
     if client.collection_exists(COLLECTION_NAME):
         client.delete_collection(COLLECTION_NAME)
 
     client.create_collection(
         collection_name=COLLECTION_NAME,
-        vectors_config=VectorParams(size=EMBED_DIM, distance=Distance.COSINE),
+        vectors_config={
+            DENSE_VECTOR_NAME: VectorParams(size=EMBED_DIM, distance=Distance.COSINE),
+        },
+        sparse_vectors_config={
+            SPARSE_VECTOR_NAME: SparseVectorParams(
+                modifier=models.Modifier.IDF,  # proper BM25 IDF term-frequency weighting
+            ),
+        },
     )
     _create_payload_index(client)
 
 
 def get_vector_store() -> QdrantVectorStore:
+    """Return a QdrantVectorStore in HYBRID mode (Dense + BM25). Collection must exist."""
     client = get_qdrant_client()
     if not client.collection_exists(COLLECTION_NAME):
         reset_collection_schema(client)
@@ -75,7 +80,11 @@ def get_vector_store() -> QdrantVectorStore:
     return QdrantVectorStore(
         client=client,
         collection_name=COLLECTION_NAME,
-        embedding=embeddings,
+        embedding=dense_embeddings,
+        sparse_embedding=sparse_embeddings,
+        retrieval_mode=RetrievalMode.HYBRID,
+        vector_name=DENSE_VECTOR_NAME,
+        sparse_vector_name=SPARSE_VECTOR_NAME,
     )
 
 

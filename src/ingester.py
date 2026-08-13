@@ -83,9 +83,9 @@ def ingest_all_pdfs() -> None:
         all_chunks.extend(chunks)
         print(f"  • {filename:<50} → {len(chunks):>3} chunks | roles: {', '.join(roles)}")
 
-    print(f"\nIndexing {len(all_chunks)} chunks (Dense Only)...")
+    print(f"\nIndexing {len(all_chunks)} chunks (Dense + BM25 Sparse)...")
     add_documents_to_qdrant(all_chunks)
-    print("Done! Dense index is ready.\n")
+    print("Done! Hybrid index is ready.\n")
 
 
 if __name__ == "__main__":

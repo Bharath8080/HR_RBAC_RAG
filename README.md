@@ -9,8 +9,6 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) system featuring **Mult
 ### 📈 Stage 1: Dense Semantic Search (Baseline)
 *Dense vector embeddings (`BAAI/bge-small-en-v1.5`) with cosine similarity & RBAC filtering.*
 
-> **Re-evaluated** with corrected ground-truth QA dataset (10 answers fixed to match PDF source).
-
 | Metric | Average Score | Pass Rate | Evaluation Result |
 |---|:---:|:---:|---|
 | **Faithfulness** | **0.97** | **100.00%** (50/50 passed) | 🟢 Flawless factual grounding in retrieved context |
@@ -21,6 +19,11 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) system featuring **Mult
 
 **Stage 1 Summary**: **78.00% PASSED** (39/50) | **22.00% FAILED** (11/50)
 
+<p align="center">
+  <img src="screenshots/stage1_cli.png" width="48%" />
+  <img src="screenshots/stage1_cloud.png" width="48%" />
+</p>
+
 ---
 
 ### 📈 Stage 2: Hybrid Search (Dense BGE-Small + Sparse BM25 + RRF)
@@ -28,28 +31,31 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) system featuring **Mult
 
 | Metric | Average Score | Pass Rate | Evaluation Result |
 |---|:---:|:---:|---|
-| **Faithfulness** | **0.92** | **98.00%** (49/50 passed) | 🟢 Grounded in retrieved policy context |
-| **Answer Relevancy** | **0.92** | **96.00%** (48/50 passed) | 🟢 Direct, concise, role-aligned answers |
-| **Contextual Precision** | **0.83** | **88.00%** (44/50 passed) | 🟢 **+5.0% boost** from BM25 keyword matching |
-| **Contextual Recall** | **0.73** | **74.00%** (37/50 passed) | 🟢 **+4.0% boost** in retrieving exact policy terms |
+| **Faithfulness** | **0.95** | **100.00%** (50/50 passed) | 🟢 Flawless factual grounding in retrieved context |
+| **Answer Relevancy** | **0.93** | **98.00%** (49/50 passed) | 🟢 Highly pertinent answers aligned with query |
+| **Contextual Precision** | **0.82** | **86.00%** (43/50 passed) | 🟢 **+0.01 score gain** from BM25 sparse keyword ranking |
+| **Contextual Recall** | **0.79** | **80.00%** (40/50 passed) | 🟢 **+2.00% boost** in retrieving exact policy terms |
 | **RBAC Security Isolation** | **1.00** | **100.00%** (28/28 passed) | 🛡️ Zero cross-role data leaks |
 
-**Stage 2 Summary**: **72.00% PASSED** (36/50) | **28.00% FAILED** (14/50)
+**Stage 2 Summary**: **80.00% PASSED** (40/50) | **20.00% FAILED** (10/50)
+
+<p align="center">
+  <img src="screenshots/stage2_cli.png" width="48%" />
+  <img src="screenshots/stage2_cloud.png" width="48%" />
+</p>
 
 ---
 
 ### 📊 Benchmark Progression: Stage 1 vs Stage 2
 
-> ⚠️ Stage 2 numbers below are from the **old QA dataset** and will be updated after the corrected-QA re-run.
-
-| Metric | Stage 1 (Dense — corrected QA) | Stage 2 (Hybrid BM25 — old QA) | Delta |
+| Metric | Stage 1 (Dense Baseline) | Stage 2 (Hybrid BM25 + Dense) | Delta / Improvement |
 |---|:---:|:---:|:---:|
-| **Contextual Precision** | 0.81 (86% pass) | 0.83 (88% pass) | 🟢 +2.0% |
-| **Contextual Recall** | 0.78 (78% pass) | 0.73 (74% pass) | ⚪ -4.0% |
-| **Faithfulness** | 0.97 (100% pass) | 0.92 (98% pass) | ⚪ -2.0% |
-| **Answer Relevancy** | 0.94 (100% pass) | 0.92 (96% pass) | ⚪ -4.0% |
-| **RBAC Isolation** | 1.00 (100% pass) | 1.00 (100% pass) | 🛡️ **100% Maintained (28/28)** |
-| **Overall Pass Rate** | **78.00%** (39/50) | **72.00%** (36/50) | ⏳ *Awaiting Stage 2 corrected re-run* |
+| **Contextual Precision** | 0.81 (86.00% pass) | **0.82 (86.00% pass)** | 🟢 **+0.01 avg score boost** |
+| **Contextual Recall** | 0.78 (78.00% pass) | **0.79 (80.00% pass)** | 🟢 **+2.00% (+1 passed test case)** |
+| **Faithfulness** | 0.97 (100.00% pass) | **0.95 (100.00% pass)** | 🛡️ **100.00% Pass Maintained (50/50)** |
+| **Answer Relevancy** | 0.94 (100.00% pass) | **0.93 (98.00% pass)** | 🟢 **High Relevancy Maintained (49/50)** |
+| **RBAC Isolation** | 1.00 (100.00% pass) | **1.00 (100.00% pass)** | 🛡️ **100.00% Maintained (28/28)** |
+| **Overall Pass Rate** | **78.00%** (39/50) | **80.00%** (40/50) | 🚀 **+2.00% Overall System Gain** |
 
 ---
 
